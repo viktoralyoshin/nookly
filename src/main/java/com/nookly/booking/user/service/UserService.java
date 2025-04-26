@@ -43,6 +43,11 @@ public class UserService implements IUserService {
     }
 
     @Override
+    public Optional<UserResponseDTO> getUserByUsername(String username) {
+        return userRepository.findByUsername(username).map(UserMapper.INSTANCE::toUserResponseDTO);
+    }
+
+    @Override
     public boolean deleteUserById(UUID id) {
         if (!userRepository.existsById(id)) return false;
 
@@ -58,5 +63,10 @@ public class UserService implements IUserService {
     @Override
     public boolean existsUserByUsername(String username) {
         return userRepository.existsByUsername(username);
+    }
+
+    @Override
+    public Optional<User> getUserByPhone(String phone) {
+        return userRepository.findByPhone(phone);
     }
 }

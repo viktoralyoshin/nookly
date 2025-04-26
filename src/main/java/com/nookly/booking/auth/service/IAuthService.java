@@ -9,4 +9,5 @@ import java.util.Optional;
 public interface IAuthService {
     public UserResponseDTO login(AuthLoginDTO authLoginDTO);
     public UserResponseDTO register(AuthRegisterDTO authRegisterDTO);
+    public void logout();
 }

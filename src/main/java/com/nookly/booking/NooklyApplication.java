@@ -14,6 +14,10 @@ public class NooklyApplication {
 		System.setProperty("DB_USERNAME", dotenv.get("DB_USERNAME"));
 		System.setProperty("DB_PASSWORD", dotenv.get("DB_PASSWORD"));
 
+		System.setProperty("JWT_SECRET", dotenv.get("JWT_SECRET"));
+		System.setProperty("JWT_ACCESS_EXP", dotenv.get("JWT_ACCESS_EXP"));
+		System.setProperty("JWT_REFRESH_EXP", dotenv.get("JWT_REFRESH_EXP"));
+
 		SpringApplication.run(NooklyApplication.class, args);
 	}
 
