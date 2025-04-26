@@ -1,4 +1,4 @@
-package com.nookly.book;
+package com.nookly.booking;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
