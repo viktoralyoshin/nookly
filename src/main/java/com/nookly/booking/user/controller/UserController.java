@@ -1,5 +1,6 @@
 package com.nookly.booking.user.controller;
 
+import com.nookly.booking.user.dto.UserMapper;
 import com.nookly.booking.user.dto.UserResponseDTO;
 import com.nookly.booking.user.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -9,6 +10,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,10 +22,12 @@ import java.util.UUID;
 @SecurityRequirement(name = "bearerAuth")
 public class UserController {
 
+    private final UserMapper userMapper;
     private final UserService userService;
 
-    public UserController(UserService userService) {
+    public UserController(UserService userService, UserMapper userMapper) {
         this.userService = userService;
+        this.userMapper = userMapper;
     }
 
     @Operation(summary = "Получение всех пользователей")
@@ -47,7 +51,11 @@ public class UserController {
             @Parameter(description = "UUID пользователя")
             @PathVariable UUID id
     ) {
-        return userService.getUserById(id).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
+        UserResponseDTO userResponseDTO = userService.getUserById(id).map(userMapper::toUserResponseDTO).orElse(null);
+        if (userResponseDTO == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(userResponseDTO);
     }
 
     @Operation(summary = "Удаление пользователя по ID")
@@ -60,8 +68,7 @@ public class UserController {
             @Parameter(description = "UUID пользователя")
             @PathVariable UUID id
     ) {
-        boolean success = userService.deleteUserById(id);
-        if (success) return ResponseEntity.ok().build();
-        else return ResponseEntity.notFound().build();
+        boolean rename = userService.deleteUserById(id);
+        return rename ? ResponseEntity.ok().build() : ResponseEntity.notFound().build();
     }
 }
