@@ -8,7 +8,6 @@ import com.nookly.booking.config.JwtConfig;
 import com.nookly.booking.exception.jwt.JwtAuthenticationException;
 import com.nookly.booking.security.jwt.JwtProvider;
 import com.nookly.booking.user.dto.UserResponseDTO;
-import com.nookly.booking.user.repository.IUserRepository;
 import com.nookly.booking.user.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -34,14 +33,12 @@ public class AuthController {
     private final AuthService authService;
     private final JwtProvider jwtProvider;
     private final JwtConfig jwtConfig;
-    private final IUserRepository userRepository;
     private final UserService userService;
 
-    public AuthController(AuthService authService, JwtProvider jwtProvider, JwtConfig jwtConfig, IUserRepository iUserRepository, UserService userService) {
+    public AuthController(AuthService authService, JwtProvider jwtProvider, JwtConfig jwtConfig, UserService userService) {
         this.authService = authService;
         this.jwtProvider = jwtProvider;
         this.jwtConfig = jwtConfig;
-        this.userRepository = iUserRepository;
         this.userService = userService;
     }
 
@@ -101,10 +98,7 @@ public class AuthController {
     ) {
         UserResponseDTO user = authService.register(authRegisterDTO);
 
-        if (user == null) return ResponseEntity.badRequest().build();
-
         Tokens tokens = generateTokens(user.getUsername(), jwtConfig.getAccessExpiration(), jwtConfig.getRefreshExpiration());
-
         addRefreshTokenToResponse(response, tokens.refreshToken);
 
         return ResponseEntity.ok(new AuthResponseDTO(user, tokens.accessToken));

@@ -10,12 +10,16 @@ import java.util.UUID;
 
 public interface IUserService {
     UserResponseDTO create(AuthRegisterDTO authRegisterDTO);
+
     List<UserResponseDTO> getAllUsers();
-    Optional<UserResponseDTO> getUserById(UUID id);
+
+    Optional<User> getUserById(UUID id);
+
     Optional<User> getUserByPhone(String phone);
+
     Optional<UserResponseDTO> getUserByUsername(String username);
+
     boolean deleteUserById(UUID id);
 
-    boolean existsUserByEmail(String email);
-    boolean existsUserByUsername(String username);
+    boolean existsUserByEmailOrUsername(String email, String username);
 }

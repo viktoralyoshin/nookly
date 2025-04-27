@@ -10,15 +10,19 @@ import com.nookly.booking.user.model.User;
 import com.nookly.booking.user.service.UserService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class AuthService implements IAuthService {
 
+    private final UserMapper userMapper;
     private final UserService userService;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
-    public AuthService(UserService userService) {
+
+    public AuthService(UserService userService, UserMapper userMapper) {
         this.userService = userService;
         this.bCryptPasswordEncoder = new BCryptPasswordEncoder();
+        this.userMapper = userMapper;
     }
 
     @Override
@@ -30,21 +34,17 @@ public class AuthService implements IAuthService {
 
         if (!matches) throw new InvalidPasswordException("Invalid phone number and/or password");
 
-        return UserMapper.INSTANCE.toUserResponseDTO(user);
+        return userMapper.toUserResponseDTO(user);
     }
 
     @Override
+    @Transactional
     public UserResponseDTO register(AuthRegisterDTO authRegisterDTO) {
-        if (userService.existsUserByEmail(authRegisterDTO.getEmail())) throw new UserExistsException("Email already taken");
-        if (userService.existsUserByUsername(authRegisterDTO.getUsername())) throw new UserExistsException("Username already taken");
+        if (userService.existsUserByEmailOrUsername(authRegisterDTO.getEmail(), authRegisterDTO.getUsername()))
+            throw new UserExistsException("Email/username already taken");
 
         authRegisterDTO.setPassword(bCryptPasswordEncoder.encode(authRegisterDTO.getPassword()));
 
         return userService.create(authRegisterDTO);
-    }
-
-    @Override
-    public void logout() {
-
     }
 }
