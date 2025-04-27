@@ -1,27 +1,19 @@
 package com.nookly.booking.hotel.dto;
 
-import com.nookly.booking.accommodation.category.dto.ResponseCategoryOnlyDTO;
-import com.nookly.booking.hotel.model.HotelStatus;
-
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.UUID;
 
-public class HotelResponseDTO {
+public class ResponseHotelOnlyDTO {
     private UUID id;
     private String name;
     private Integer starRating;
     private String location;
     private BigDecimal latitude;
     private BigDecimal longitude;
-    private String description;
-    private Double rating;
     private String hotelNumber;
-    private HotelStatus status;
     private String email;
     private String phone;
-    private List<ResponseCategoryOnlyDTO> categories;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
@@ -73,36 +65,12 @@ public class HotelResponseDTO {
         this.longitude = longitude;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public Double getRating() {
-        return rating;
-    }
-
-    public void setRating(Double rating) {
-        this.rating = rating;
-    }
-
     public String getHotelNumber() {
         return hotelNumber;
     }
 
     public void setHotelNumber(String hotelNumber) {
         this.hotelNumber = hotelNumber;
-    }
-
-    public HotelStatus getStatus() {
-        return status;
-    }
-
-    public void setStatus(HotelStatus status) {
-        this.status = status;
     }
 
     public String getEmail() {
@@ -135,13 +103,5 @@ public class HotelResponseDTO {
 
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
-    }
-
-    public List<ResponseCategoryOnlyDTO> getCategories() {
-        return categories;
-    }
-
-    public void setCategories(List<ResponseCategoryOnlyDTO> categories) {
-        this.categories = categories;
     }
 }

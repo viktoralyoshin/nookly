@@ -9,4 +9,5 @@ public interface HotelMapper {
     Hotel toHotelFromCreatHotelDTO(CreateHotelDTO createHotelDTO);
     HotelResponseDTO toHotelResponseDTO(Hotel hotel);
     Hotel toHotelFromUpdateHotelDTO(UpdateHotelDTO updateHotelDTO);
+    ResponseHotelOnlyDTO toResponseHotelOnlyDTO(Hotel hotel);
 }

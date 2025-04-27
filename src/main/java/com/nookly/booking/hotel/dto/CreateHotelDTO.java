@@ -2,16 +2,12 @@ package com.nookly.booking.hotel.dto;
 
 import jakarta.validation.constraints.*;
 import java.math.BigDecimal;
-import java.util.UUID;
 
 public class CreateHotelDTO {
 
     @NotBlank(message = "Hotel name is required")
     @Size(min = 2, max = 100, message = "Hotel name must be between 2 and 100 characters")
     private String name;
-
-    @NotNull(message = "Owner ID is required")
-    private UUID ownerId;
 
     @NotNull(message = "Star rating is required")
     @Min(value = 1, message = "Minimum rating is 1 star")
@@ -71,13 +67,5 @@ public class CreateHotelDTO {
 
     public void setLongitude(BigDecimal longitude) {
         this.longitude = longitude;
-    }
-
-    public UUID getOwnerId() {
-        return ownerId;
-    }
-
-    public void setOwnerId(UUID ownerId) {
-        this.ownerId = ownerId;
     }
 }

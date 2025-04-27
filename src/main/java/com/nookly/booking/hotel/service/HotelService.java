@@ -74,33 +74,15 @@ public class HotelService implements IHotelService {
         Hotel hotel = hotelRepository.findByHotelNumber(hotelId)
                 .orElseThrow(() -> new DataNotFoundException("Hotel not found"));
 
-        if (updateHotelDTO.getName() != null) {
-            hotel.setName(updateHotelDTO.getName());
-        }
-        if (updateHotelDTO.getStarRating() != null) {
-            hotel.setStarRating(updateHotelDTO.getStarRating());
-        }
-        if (updateHotelDTO.getLocation() != null) {
-            hotel.setLocation(updateHotelDTO.getLocation());
-        }
-        if (updateHotelDTO.getLatitude() != null) {
-            hotel.setLatitude(updateHotelDTO.getLatitude());
-        }
-        if (updateHotelDTO.getLongitude() != null) {
-            hotel.setLongitude(updateHotelDTO.getLongitude());
-        }
-        if (updateHotelDTO.getDescription() != null) {
-            hotel.setDescription(updateHotelDTO.getDescription());
-        }
-        if (updateHotelDTO.getStatus() != null) {
-            hotel.setStatus(updateHotelDTO.getStatus());
-        }
-        if (updateHotelDTO.getEmail() != null) {
-            hotel.setEmail(updateHotelDTO.getEmail());
-        }
-        if (updateHotelDTO.getPhone() != null) {
-            hotel.setPhone(updateHotelDTO.getPhone());
-        }
+        if (updateHotelDTO.getName() != null) hotel.setName(updateHotelDTO.getName());
+        if (updateHotelDTO.getStarRating() != null) hotel.setStarRating(updateHotelDTO.getStarRating());
+        if (updateHotelDTO.getLocation() != null) hotel.setLocation(updateHotelDTO.getLocation());
+        if (updateHotelDTO.getLatitude() != null) hotel.setLatitude(updateHotelDTO.getLatitude());
+        if (updateHotelDTO.getLongitude() != null) hotel.setLongitude(updateHotelDTO.getLongitude());
+        if (updateHotelDTO.getDescription() != null) hotel.setDescription(updateHotelDTO.getDescription());
+        if (updateHotelDTO.getStatus() != null) hotel.setStatus(updateHotelDTO.getStatus());
+        if (updateHotelDTO.getEmail() != null) hotel.setEmail(updateHotelDTO.getEmail());
+        if (updateHotelDTO.getPhone() != null) hotel.setPhone(updateHotelDTO.getPhone());
 
         Hotel updatedHotel = hotelRepository.save(hotel);
 

@@ -1,0 +1,85 @@
+package com.nookly.booking.accommodation.category.dto;
+
+import com.nookly.booking.accommodation.amenity.dto.ResponseAmenityOnlyDTO;
+import com.nookly.booking.hotel.dto.ResponseHotelOnlyDTO;
+import com.nookly.booking.pricing.tariff.dto.ResponseTariffOnlyDTO;
+import com.nookly.booking.reservation.room.dto.ResponseRoomOnlyDTO;
+
+import java.math.BigDecimal;
+import java.util.List;
+import java.util.UUID;
+
+public class ResponseCategoryDTO {
+    private UUID id;
+    private String name;
+    private BigDecimal price;
+    private Integer capacity;
+    private List<ResponseRoomOnlyDTO> rooms;
+    private List<ResponseTariffOnlyDTO> tariffs;
+    private List<ResponseAmenityOnlyDTO> amenities;
+    private ResponseHotelOnlyDTO hotel;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public BigDecimal getPrice() {
+        return price;
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = price;
+    }
+
+    public Integer getCapacity() {
+        return capacity;
+    }
+
+    public void setCapacity(Integer capacity) {
+        this.capacity = capacity;
+    }
+
+    public List<ResponseRoomOnlyDTO> getRooms() {
+        return rooms;
+    }
+
+    public void setRooms(List<ResponseRoomOnlyDTO> rooms) {
+        this.rooms = rooms;
+    }
+
+    public List<ResponseTariffOnlyDTO> getTariffs() {
+        return tariffs;
+    }
+
+    public void setTariffs(List<ResponseTariffOnlyDTO> tariffs) {
+        this.tariffs = tariffs;
+    }
+
+    public List<ResponseAmenityOnlyDTO> getAmenities() {
+        return amenities;
+    }
+
+    public void setAmenities(List<ResponseAmenityOnlyDTO> amenities) {
+        this.amenities = amenities;
+    }
+
+    public ResponseHotelOnlyDTO getHotel() {
+        return hotel;
+    }
+
+    public void setHotel(ResponseHotelOnlyDTO hotel) {
+        this.hotel = hotel;
+    }
+
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
+    }
+}

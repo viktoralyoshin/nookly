@@ -21,7 +21,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/hotels")
-@Tag(name = "Hotel Сontroller", description = "API для управления отелями")
+@Tag(name = "Hotel Controller", description = "API для управления отелями")
 public class HotelController {
     private final HotelService hotelService;
 

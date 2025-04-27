@@ -1,11 +1,12 @@
 package com.nookly.booking.hotel.model;
 
-import com.nookly.booking.user.dto.UserResponseDTO;
+import com.nookly.booking.accommodation.category.model.Category;
 import com.nookly.booking.user.model.User;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -20,6 +21,9 @@ public class Hotel {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "owner_id")
     private User owner;
+
+    @OneToMany(fetch = FetchType.EAGER, orphanRemoval = true, mappedBy = "hotel")
+    private List<Category> categories;
 
     @Column(name = "star_rating")
     private Integer starRating;
@@ -51,25 +55,14 @@ public class Hotel {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    public Hotel(UUID id,
-                 String name,
-                 User owner,
-                 Integer starRating,
-                 String location,
-                 BigDecimal latitude,
-                 BigDecimal longitude,
-                 String description,
-                 Double rating,
-                 String hotelNumber,
-                 HotelStatus status,
-                 String email,
-                 String phone,
-                 LocalDateTime createdAt,
-                 LocalDateTime updatedAt
-    ) {
+    public Hotel() {
+    }
+
+    public Hotel(UUID id, String name, User owner, List<Category> categories, Integer starRating, String location, BigDecimal latitude, BigDecimal longitude, String description, Double rating, String hotelNumber, HotelStatus status, String email, String phone, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.name = name;
         this.owner = owner;
+        this.categories = categories;
         this.starRating = starRating;
         this.location = location;
         this.latitude = latitude;
@@ -83,8 +76,6 @@ public class Hotel {
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
-
-    public Hotel() {}
 
     @PrePersist
     protected void onCreate() {
@@ -215,5 +206,13 @@ public class Hotel {
 
     public void setHotelNumber(String hotelNumber) {
         this.hotelNumber = hotelNumber;
+    }
+
+    public List<Category> getCategories() {
+        return categories;
+    }
+
+    public void setCategories(List<Category> categories) {
+        this.categories = categories;
     }
 }
