@@ -24,7 +24,7 @@ public class RoomService implements IRoomService {
 
     @Override
     public ResponseRoomOnlyDTO getRoom(UUID roomId) {
-        return roomRepository.findById(roomId).map(roomMapper::toResponseRoomOnlyDTO).orElseThrow(()-> new DataNotFoundException("Room not found"));
+        return roomRepository.findById(roomId).map(roomMapper::toResponseRoomOnlyDTO).orElseThrow(() -> new DataNotFoundException("Room not found"));
     }
 
     @Override
@@ -39,7 +39,7 @@ public class RoomService implements IRoomService {
 
     @Override
     public ResponseRoomOnlyDTO updateRoom(UUID roomId, RequestRoomDTO roomDTO) {
-        Room room = roomRepository.findById(roomId).orElseThrow(()-> new DataNotFoundException("Room not found"));
+        Room room = roomRepository.findById(roomId).orElseThrow(() -> new DataNotFoundException("Room not found"));
 
         if (roomDTO.getRoomNumber() != null) room.setRoomNumber(roomDTO.getRoomNumber());
 
@@ -48,8 +48,18 @@ public class RoomService implements IRoomService {
 
     @Override
     public void deleteRoom(UUID roomId) {
-        Room room = roomRepository.findById(roomId).orElseThrow(()-> new DataNotFoundException("Room not found"));
+        Room room = roomRepository.findById(roomId).orElseThrow(() -> new DataNotFoundException("Room not found"));
         roomRepository.delete(room);
+    }
+
+    @Override
+    public List<ResponseRoomOnlyDTO> getRoomsByCategory(UUID categoryId) {
+        return roomRepository.findByCategoryId(categoryId).stream().map(roomMapper::toResponseRoomOnlyDTO).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<ResponseRoomOnlyDTO> getRoomsByHotel(String hotelNumber) {
+        return roomRepository.findByHotel_HotelNumber(hotelNumber).stream().map(roomMapper::toResponseRoomOnlyDTO).collect(Collectors.toList());
     }
 }
 

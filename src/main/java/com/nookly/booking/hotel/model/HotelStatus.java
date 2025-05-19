@@ -4,4 +4,5 @@ public enum HotelStatus {
     CLOSED,
     OPEN,
     BANNED,
+    PENDING
 }

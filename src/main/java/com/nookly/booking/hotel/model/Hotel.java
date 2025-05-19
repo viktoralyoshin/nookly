@@ -43,7 +43,7 @@ public class Hotel {
     private String hotelNumber;
 
     @Enumerated(EnumType.STRING)
-    private HotelStatus status = HotelStatus.CLOSED;
+    private HotelStatus status = HotelStatus.PENDING;
 
     private String email;
 

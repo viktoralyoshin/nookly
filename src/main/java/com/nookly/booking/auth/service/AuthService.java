@@ -40,8 +40,8 @@ public class AuthService implements IAuthService {
     @Override
     @Transactional
     public UserResponseDTO register(AuthRegisterDTO authRegisterDTO) {
-        if (userService.existsUserByEmailOrUsername(authRegisterDTO.getEmail(), authRegisterDTO.getUsername()))
-            throw new UserExistsException("Email/username already taken");
+        if (userService.existsUserByPhoneOrUsername(authRegisterDTO.getPhone(), authRegisterDTO.getUsername()))
+            throw new UserExistsException("Phone or username already taken");
 
         authRegisterDTO.setPassword(bCryptPasswordEncoder.encode(authRegisterDTO.getPassword()));
 

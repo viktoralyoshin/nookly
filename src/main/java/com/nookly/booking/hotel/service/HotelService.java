@@ -6,10 +6,10 @@ import com.nookly.booking.hotel.dto.HotelMapper;
 import com.nookly.booking.hotel.dto.HotelResponseDTO;
 import com.nookly.booking.hotel.dto.UpdateHotelDTO;
 import com.nookly.booking.hotel.model.Hotel;
+import com.nookly.booking.hotel.model.HotelStatus;
 import com.nookly.booking.hotel.repository.IHotelRepository;
 import com.nookly.booking.hotel.utils.GenerateHotelNumberService;
 import com.nookly.booking.user.model.User;
-import com.nookly.booking.user.repository.IUserRepository;
 import com.nookly.booking.user.service.UserService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,14 +25,16 @@ public class HotelService implements IHotelService {
     private final IHotelRepository hotelRepository;
     private final UserService userService;
     private final GenerateHotelNumberService generateHotelNumberService;
-    private final IUserRepository iUserRepository;
 
-    public HotelService(IHotelRepository hotelRepository, UserService userService, HotelMapper hotelMapper, GenerateHotelNumberService generateHotelNumberService, IUserRepository iUserRepository) {
+    public HotelService(IHotelRepository hotelRepository,
+                        UserService userService,
+                        HotelMapper hotelMapper,
+                        GenerateHotelNumberService generateHotelNumberService
+    ) {
         this.hotelRepository = hotelRepository;
         this.userService = userService;
         this.hotelMapper = hotelMapper;
         this.generateHotelNumberService = generateHotelNumberService;
-        this.iUserRepository = iUserRepository;
     }
 
     @Override
@@ -76,7 +78,10 @@ public class HotelService implements IHotelService {
 
         if (updateHotelDTO.getName() != null) hotel.setName(updateHotelDTO.getName());
         if (updateHotelDTO.getStarRating() != null) hotel.setStarRating(updateHotelDTO.getStarRating());
-        if (updateHotelDTO.getLocation() != null) hotel.setLocation(updateHotelDTO.getLocation());
+        if (updateHotelDTO.getLocation() != null) {
+            hotel.setStatus(HotelStatus.PENDING);
+            hotel.setLocation(updateHotelDTO.getLocation());
+        }
         if (updateHotelDTO.getLatitude() != null) hotel.setLatitude(updateHotelDTO.getLatitude());
         if (updateHotelDTO.getLongitude() != null) hotel.setLongitude(updateHotelDTO.getLongitude());
         if (updateHotelDTO.getDescription() != null) hotel.setDescription(updateHotelDTO.getDescription());

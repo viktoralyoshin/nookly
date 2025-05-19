@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
 import java.util.UUID;
 
 public interface ICategoryRepository extends JpaRepository<Category, UUID> {
@@ -23,4 +24,6 @@ public interface ICategoryRepository extends JpaRepository<Category, UUID> {
     @Query(value = "DELETE FROM rooms WHERE category_id = :categoryId",
             nativeQuery = true)
     void deleteRooms(@Param("categoryId") UUID categoryId);
+
+    List<Category> findByHotelIdAndCapacity(UUID hotelId, Integer capacity);
 }

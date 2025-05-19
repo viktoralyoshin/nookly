@@ -18,6 +18,8 @@ public class NooklyApplication {
 		System.setProperty("JWT_ACCESS_EXP", dotenv.get("JWT_ACCESS_EXP"));
 		System.setProperty("JWT_REFRESH_EXP", dotenv.get("JWT_REFRESH_EXP"));
 
+		System.setProperty("YANDEX_GEOCODER_API_KEY", dotenv.get("YANDEX_GEOCODER_API_KEY"));
+
 		SpringApplication.run(NooklyApplication.class, args);
 	}
 

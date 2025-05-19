@@ -87,16 +87,18 @@ class CategoryService implements ICategoryService {
     @Override
     @Transactional
     public ResponseCategoryDTO updateCategory(UUID id, UpdateCategoryDTO updateCategoryDTO) {
-
-        Category category = categoryRepository.findById(id).orElseThrow(() -> new DataNotFoundException("Category not found"));
+        Category category = categoryRepository.findById(id)
+                .orElseThrow(() -> new DataNotFoundException("Category not found"));
 
         if (updateCategoryDTO.getName() != null) category.setName(updateCategoryDTO.getName());
         if (updateCategoryDTO.getPrice() != null) category.setPrice(updateCategoryDTO.getPrice());
         if (updateCategoryDTO.getCapacity() != null) category.setCapacity(updateCategoryDTO.getCapacity());
+
         if (updateCategoryDTO.getAmenityIds() != null) {
             List<Amenity> amenities = amenityRepository.findAllById(updateCategoryDTO.getAmenityIds());
             category.setAmenities(amenities);
         }
+
         if (updateCategoryDTO.getRoomNumbers() != null) {
             Set<Integer> existingRoomNumbers = category.getRooms().stream()
                     .map(Room::getRoomNumber)
@@ -104,31 +106,39 @@ class CategoryService implements ICategoryService {
 
             Set<Integer> newRoomNumbers = new HashSet<>(updateCategoryDTO.getRoomNumbers());
 
-            Set<Integer> roomsToDelete = new HashSet<>(existingRoomNumbers);
-            roomsToDelete.removeAll(newRoomNumbers);
+            Set<Integer> roomsToDeleteNumbers = new HashSet<>(existingRoomNumbers);
+            roomsToDeleteNumbers.removeAll(newRoomNumbers);
 
-            Set<Integer> roomsToAdd = new HashSet<>(existingRoomNumbers);
-            roomsToAdd.removeAll(newRoomNumbers);
+            Set<Integer> roomsToAddNumbers = new HashSet<>(newRoomNumbers);
+            roomsToAddNumbers.removeAll(existingRoomNumbers);
 
-            List<Room> roomsToRemove = category.getRooms().stream()
-                    .filter(room -> roomsToDelete.contains(room.getRoomNumber()))
-                    .collect(Collectors.toList());
-            roomRepository.deleteAll(roomsToRemove);
+            if (!roomsToDeleteNumbers.isEmpty()) {
+                List<Room> roomsToRemove = category.getRooms().stream()
+                        .filter(room -> roomsToDeleteNumbers.contains(room.getRoomNumber()))
+                        .collect(Collectors.toList());
 
-            List<Room> roomsToCreate = roomsToAdd.stream()
-                    .map(number -> {
-                        Room room = new Room();
-                        room.setRoomNumber(number);
-                        room.setCategory(category);
-                        return room;
-                    })
-                    .collect(Collectors.toList());
-            roomRepository.saveAll(roomsToCreate);
+                roomsToRemove.forEach(room -> room.setCategory(null));
+                category.getRooms().removeAll(roomsToRemove);
+                roomRepository.deleteAll(roomsToRemove);
+            }
+
+            if (!roomsToAddNumbers.isEmpty()) {
+                List<Room> newRooms = roomsToAddNumbers.stream()
+                        .map(number -> {
+                            Room room = new Room();
+                            room.setRoomNumber(number);
+                            room.setCategory(category);
+                            return room;
+                        })
+                        .collect(Collectors.toList());
+
+                List<Room> savedRooms = roomRepository.saveAll(newRooms);
+                category.getRooms().addAll(savedRooms);
+            }
         }
 
-        categoryRepository.save(category);
-
-        return categoryMapper.toResponseCategoryDTO(categoryRepository.save(category));
+        Category savedCategory = categoryRepository.save(category);
+        return categoryMapper.toResponseCategoryDTO(savedCategory);
     }
 
     @Override

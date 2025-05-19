@@ -18,7 +18,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(UserExistsException.class)
     public ResponseEntity<Map<String, String>> handleUserExistsException(UserExistsException e) {
-        return ResponseEntity.badRequest().body(Map.of("Error", e.getMessage()));
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(Map.of("Error", e.getMessage()));
     }
 
     @ExceptionHandler(InvalidPasswordException.class)

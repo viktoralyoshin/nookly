@@ -65,7 +65,8 @@ public class UserService implements IUserService {
         return userRepository.findByPhone(phone);
     }
 
-    public boolean existsUserByEmailOrUsername(String email, String username) {
-        return userRepository.existsByEmailOrUsername(email, username);
+    public boolean existsUserByPhoneOrUsername(String phone, String username) {
+        return userRepository.existsByPhoneOrUsername(phone, username);
     }
 }
+
