@@ -1,5 +1,6 @@
 package com.nookly.booking.user.controller;
 
+import com.nookly.booking.auth.exception.UserExistsException;
 import com.nookly.booking.user.dto.UserMapper;
 import com.nookly.booking.user.dto.UserResponseDTO;
 import com.nookly.booking.user.service.UserService;

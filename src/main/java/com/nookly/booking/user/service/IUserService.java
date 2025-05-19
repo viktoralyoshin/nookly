@@ -21,5 +21,5 @@ public interface IUserService {
 
     boolean deleteUserById(UUID id);
 
-    boolean existsUserByEmailOrUsername(String email, String username);
+    boolean existsUserByPhoneOrUsername(String phone, String username);
 }

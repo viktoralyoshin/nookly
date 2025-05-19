@@ -1,6 +1,7 @@
 package com.nookly.booking.reservation.room.model;
 
 import com.nookly.booking.accommodation.category.model.Category;
+import com.nookly.booking.hotel.model.Hotel;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -17,6 +18,10 @@ public class Room {
     @JoinColumn(name = "category_id")
     private Category category;
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "hotel_id")
+    private Hotel hotel;
+
     @Column(name = "room_number")
     private Integer roomNumber;
 
@@ -28,9 +33,10 @@ public class Room {
 
     public Room(){}
 
-    public Room(UUID id, Category category, Integer roomNumber, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public Room(UUID id, Category category, Hotel hotel, Integer roomNumber, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.category = category;
+        this.hotel = hotel;
         this.roomNumber = roomNumber;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
@@ -85,5 +91,13 @@ public class Room {
 
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public Hotel getHotel() {
+        return hotel;
+    }
+
+    public void setHotel(Hotel hotel) {
+        this.hotel = hotel;
     }
 }

@@ -12,4 +12,6 @@ public interface IRoomService {
     ResponseRoomOnlyDTO createRoom(RequestRoomDTO roomDTO);
     ResponseRoomOnlyDTO updateRoom(UUID roomId, RequestRoomDTO roomDTO);
     void deleteRoom(UUID roomId);
+    List<ResponseRoomOnlyDTO> getRoomsByCategory(UUID categoryId);
+    List<ResponseRoomOnlyDTO> getRoomsByHotel(String hotelNumber);
 }

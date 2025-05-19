@@ -3,6 +3,7 @@ package com.nookly.booking.auth.controller;
 import com.nookly.booking.auth.dto.AuthLoginDTO;
 import com.nookly.booking.auth.dto.AuthRegisterDTO;
 import com.nookly.booking.auth.dto.AuthResponseDTO;
+import com.nookly.booking.auth.exception.UserExistsException;
 import com.nookly.booking.auth.service.AuthService;
 import com.nookly.booking.config.JwtConfig;
 import com.nookly.booking.exception.jwt.JwtAuthenticationException;
@@ -45,6 +46,20 @@ public class AuthController {
     private record Tokens(String accessToken, String refreshToken) {
     }
 
+    @GetMapping("/check-user")
+    public ResponseEntity<UserResponseDTO> checkUser(@RequestParam(required = false) String phone, @RequestParam(required = false) String username) {
+        String normalizedPhone = "";
+
+        if (phone != null) {
+            normalizedPhone = phone.replace(" ", "+mvn ");
+        }
+
+        if (userService.existsUserByPhoneOrUsername(normalizedPhone, username))
+            throw new UserExistsException("Phone or username already taken");
+
+        return ResponseEntity.ok().build();
+    }
+
     private Tokens generateTokens(String username, Long accessTokenExpiresIn, Long refreshExpiresIn) {
         String accessToken = jwtProvider.generateToken(username, accessTokenExpiresIn);
         String refreshToken = jwtProvider.generateToken(username, refreshExpiresIn);
@@ -58,6 +73,7 @@ public class AuthController {
         refreshTokenCookie.setHttpOnly(true);
         refreshTokenCookie.setSecure(false);
         refreshTokenCookie.setMaxAge(24 * 60 * 60);
+        refreshTokenCookie.setAttribute("SameSite", "lax");
 
         response.addCookie(refreshTokenCookie);
     }
